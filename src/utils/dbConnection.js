@@ -5,18 +5,20 @@ const client = new MongoClient(connectionString, {
   useUnifiedTopology: true,
 });
 
-module.exports = {
-  connectToServer: function (callback) {
-    client.connect(function (err, db) {
-      if (err || !db) {
-        return callback(err);
-      }
+export default client;
 
-      return callback();
-    });
-  },
+export const videoCollection = client.db("video-application").collection("videos");
+// module.exports = {
+//   connectToServer: function (callback) {
+//     client.connect(function (err, db) {
+//       if (err || !db) {
+//         return callback(err);
+//       }
+//       return callback();
+//     });
+//   },
 
-  dbConnect: function () {
-    return client.db("video-application");
-  },
-};
+//   dbConnect: function (video) {
+//     return client.db("video-application").collection(video)
+//   },
+// };
