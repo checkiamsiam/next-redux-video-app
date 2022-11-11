@@ -1,7 +1,14 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import VideoCard from "../src/components/home/videoCard";
+import { getVideos } from "../src/features/videos/videoSlice";
 
-export default function Home({ videos }) {
-  console.log(videos);
+export default function Home() {
+  const dispatch = useDispatch()
+  const {videos} = useSelector(state => state.videos)
+  useEffect(()=>{
+    dispatch(getVideos())
+  },[dispatch])
   return (
     <>
       <section>
@@ -37,8 +44,10 @@ export default function Home({ videos }) {
   );
 }
 
-export async function getServerSideProps() {
-  const res = await fetch("http://localhost:3000/api/video");
-  const videos = await res.json();
-  return { props: { videos: videos.data } };
-}
+
+
+// export async function getServerSideProps() {
+//   const res = await fetch("http://localhost:3000/api/video");
+//   const videos = await res.json();
+//   return { props: { videos: videos.data } };
+// }
