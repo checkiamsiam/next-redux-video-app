@@ -1,9 +1,20 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import like from "../../src/assets/like.svg";
 import unlike from "../../src/assets/unlike.svg";
 import RelatedVideoCard from "../../src/components/video/relatedVideoCard";
+import { getCurrentVideo } from "../../src/features/currentVideo/currentVideoSlice";
 
-function Video({ video }) {
+function Video() {
+  const router = useRouter()
+  const {videoId} = router.query
+  const dispatch = useDispatch();
+  const { video } = useSelector((state) => state.currentVideo);
+  useEffect(() => {
+    dispatch(getCurrentVideo(videoId));
+  }, [dispatch , router]);
   const { title, description, author, avatar, date, duration, views, link, thumbnail, tags, likes, unlikes } = video;
   return (
     <section class="pt-6 pb-20">
@@ -53,10 +64,10 @@ function Video({ video }) {
   );
 }
 
-export async function getServerSideProps(ctx) {
-  const { videoId } = ctx.query;
-  const res = await fetch(`http://localhost:3000/api/video/${videoId}`);
-  const video = await res.json();
-  return { props: { video: video.data } };
-}
+// export async function getServerSideProps(ctx) {
+//   const { videoId } = ctx.query;
+//   const res = await fetch(`http://localhost:3000/api/video/${videoId}`);
+//   const video = await res.json();
+//   return { props: { video: video.data } };
+// }
 export default Video;

@@ -15,7 +15,7 @@ const videoSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(getVideos.pending, (state, action) => {
-      (state.loading = true), (state.videos = []), (state.error = "");
+      (state.loading = true), (state.error = "");
     });
     builder.addCase(getVideos.fulfilled, (state, action) => {
       (state.loading = false), (state.videos = action.payload), (state.error = "");

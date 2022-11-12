@@ -8,6 +8,7 @@ const client = new MongoClient(connectionString, {
 export default client;
 
 export const videoCollection = client.db("video-application").collection("videos");
+export const tagCollection = client.db("video-application").collection("tags");
 // module.exports = {
 //   connectToServer: function (callback) {
 //     client.connect(function (err, db) {

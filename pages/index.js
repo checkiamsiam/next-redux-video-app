@@ -1,30 +1,25 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Tags from "../src/components/home/tags";
 import VideoCard from "../src/components/home/videoCard";
 import { getVideos } from "../src/features/videos/videoSlice";
 
 export default function Home() {
-  const dispatch = useDispatch()
-  const {videos} = useSelector(state => state.videos)
-  useEffect(()=>{
-    dispatch(getVideos())
-  },[dispatch])
+  const dispatch = useDispatch();
+  const { videos } = useSelector((state) => state.videos);
+  useEffect(() => {
+    dispatch(getVideos());
+  }, [dispatch]);
   return (
     <>
-      <section>
-        <div className="max-w-7xl mx-auto px-5 py-6 lg:px-0 flex gap-2 border-b overflow-y-auto">
-          <div className="bg-blue-100 text-blue-600 px-4 py-1 rounded-full cursor-pointer">react</div>
-
-          <div className="bg-blue-600 text-white px-4 py-1 rounded-full cursor-pointer">redux</div>
-        </div>
-      </section>
+      <Tags />
 
       <section className="pt-12">
         <section className="pt-12">
           <div className="grid grid-cols-12 gap-4 max-w-7xl mx-auto px-5 lg:px-0 min-h-[300px]">
             {videos.map((video) => (
               <>
-                <VideoCard key={video._id} video={video} />
+                <VideoCard key={video?._id} video={video} />
               </>
             ))}
             {/* <div className="col-span-12">some error happened</div>  */}
@@ -43,8 +38,6 @@ export default function Home() {
     </>
   );
 }
-
-
 
 // export async function getServerSideProps() {
 //   const res = await fetch("http://localhost:3000/api/video");
