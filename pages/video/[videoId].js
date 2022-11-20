@@ -5,17 +5,22 @@ import { useDispatch, useSelector } from "react-redux";
 import like from "../../src/assets/like.svg";
 import unlike from "../../src/assets/unlike.svg";
 import RelatedVideoCard from "../../src/components/video/relatedVideoCard";
-import { getCurrentVideo } from "../../src/features/currentVideo/currentVideoSlice";
+import { getCurrentVideo, getRelatedVideo } from "../../src/features/currentVideo/currentVideoSlice";
 
 function Video() {
-  const router = useRouter()
-  const {videoId} = router.query
+  const router = useRouter();
+  const { videoId } = router.query;
   const dispatch = useDispatch();
-  const { video } = useSelector((state) => state.currentVideo);
+  const { video, relatedVideo } = useSelector((state) => state.currentVideo);
+  const { title, description, link, date, likes, unlikes } = video;
   useEffect(() => {
-    dispatch(getCurrentVideo(videoId));
-  }, [dispatch , router]);
-  const { title, description, author, avatar, date, duration, views, link, thumbnail, tags, likes, unlikes } = video;
+    const sideEffect = async () => {
+      await dispatch(getCurrentVideo(videoId));
+      await dispatch(getRelatedVideo(videoId));
+    };
+    sideEffect();
+  }, [videoId]);
+
   return (
     <section class="pt-6 pb-20">
       <div class="mx-auto max-w-7xl px-2 pb-20 min-h-[400px]">
@@ -56,7 +61,9 @@ function Video() {
           </div>
 
           <div class="col-span-full lg:col-auto max-h-[570px] overflow-y-auto">
-            <RelatedVideoCard />
+            {relatedVideo.map((v) => (
+              <RelatedVideoCard key={v._id} video={v} />
+            ))}
           </div>
         </div>
       </div>
